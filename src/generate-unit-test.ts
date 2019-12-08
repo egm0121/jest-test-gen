@@ -92,7 +92,7 @@ function prepareImports(imports: ParsedImport[], quoteSymbol: string): ParsedImp
   let index = 0;
   while (index < imports.length) {
     const value = imports[index];
-    if (!value.path.match(/['"']/)) {
+    if (!value.path.match(/['"]/)) {
       value.path = quoteSymbol + value.path + quoteSymbol;
     }
     result.push(value);
@@ -100,6 +100,9 @@ function prepareImports(imports: ParsedImport[], quoteSymbol: string): ParsedImp
 
     for (let i = imports.length - 1; i >= index; i--) {
       const target = imports[i];
+      if (!target.path.match(/['"]/)) {
+        target.path = quoteSymbol + target.path + quoteSymbol;
+      }
 
       if (target.path === value.path) {
         value.names = uniq(value.names.concat(target.names));
