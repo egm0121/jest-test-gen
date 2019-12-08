@@ -1,5 +1,5 @@
-import { ParsedClassDependency, ClassOptions, DependencyHandler, DependencyHandlerOptions } from './model';
-import { getUsedMethods } from './helpers';
+import { ParsedClassDependency, ClassOptions, DependencyHandler, DependencyHandlerOptions } from '../model';
+import { getUsedMethods } from '../helpers';
 
 export default {
   run(result: ClassOptions, dep: ParsedClassDependency, options: DependencyHandlerOptions) {

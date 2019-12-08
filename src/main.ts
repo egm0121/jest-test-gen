@@ -2,8 +2,8 @@ import { readFileSync, writeFileSync, readdirSync } from 'fs';
 import * as ts from 'typescript';
 import { parseSourceFile } from './parse-source-file';
 import { generateUnitTest } from './generate-unit-test';
-import defaultDependencyHandler from './default-dependency-handler';
 import { DependencyHandler } from './model';
+import { dependencyHandlers } from './dependency-handlers';
 
 export function run(params: string[]) {
   if (!params.length) {
@@ -26,7 +26,7 @@ export function run(params: string[]) {
     });
     params = params.slice(2);
   }
-  handlers.push(defaultDependencyHandler);
+  handlers.push(...dependencyHandlers);
 
   const path = params[0];
 
