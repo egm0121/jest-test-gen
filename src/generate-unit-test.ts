@@ -106,6 +106,7 @@ function prepareImports(imports: ParsedImport[], quoteSymbol: string): ParsedImp
 
       if (target.path === value.path) {
         value.names = uniq(value.names.concat(target.names));
+        value.names.sort();
         imports.splice(i, 1);
       }
     }
