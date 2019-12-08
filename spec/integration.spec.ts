@@ -1,7 +1,7 @@
 import { run } from '../src/main';
 import { unlinkSync, readFileSync } from 'fs';
 
-const leaveSpecFilesOnDisk = false;
+const leaveSpecFilesOnDisk = true;
 
 describe('integration', () => {
 
@@ -15,7 +15,7 @@ describe('integration', () => {
 
   });
 
-  describe(`home component test`, () => {
+  fdescribe(`home component test`, () => {
 
     createSpec({
       file: 'spec/fixtures/components/home-page/home-page.component.ts',
