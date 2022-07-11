@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.0
+
+- #3 Support for static methods in classes
+- #4 .toBeDefined instead of (or in addition to) .toBeTruthy 
+- #6 migrate tests from jasmine to Jest, makes a lot of sense for this project
+
 ## v1.0.0
 
 - Adds support for parsing React class + functional components to generate snapshot test

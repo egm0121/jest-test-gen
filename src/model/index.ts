@@ -20,6 +20,7 @@ export interface ParsedClass {
 export interface ParsedMethod {
   methodName: ts.__String | string;
   isAsync: boolean;
+  isStatic: boolean;
   params: ts.__String[];
 }
 

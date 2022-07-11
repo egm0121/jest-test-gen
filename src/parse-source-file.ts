@@ -61,6 +61,9 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
   function hasAsyncModifier(node: ts.ClassDeclaration | ts.FunctionDeclaration |  ts.FunctionExpression | ts.MethodDeclaration) {
     return node.modifiers ? node.modifiers.some(mod => mod.kind === ts.SyntaxKind.AsyncKeyword): false;
   }
+  function hasStaticModifier(node: ts.ClassDeclaration | ts.FunctionDeclaration |  ts.FunctionExpression | ts.MethodDeclaration) {
+    return node.modifiers ? node.modifiers.some(mod => mod.kind === ts.SyntaxKind.StaticKeyword): false;
+  }
   function hasExportModifier(node: ts.ClassDeclaration | ts.FunctionDeclaration | ts.VariableStatement) {
     return node.modifiers ? node.modifiers.some(mod => mod.kind === ts.SyntaxKind.ExportKeyword): false;
   }
@@ -120,7 +123,8 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
         klass.methods.push({
           methodName,
           params: methodChild.parameters.map(param => (param.name as ts.Identifier).escapedText),
-          isAsync: hasAsyncModifier(methodChild)
+          isAsync: hasAsyncModifier(methodChild),
+          isStatic: hasStaticModifier(methodChild),
         })
       }
     });
@@ -216,7 +220,8 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
               parsedPojo.methods.push({
                 methodName,
                 params: methodNode.parameters.map(param => (param.name as ts.Identifier).escapedText),
-                isAsync: hasAsyncModifier(methodNode)
+                isAsync: hasAsyncModifier(methodNode),
+                isStatic: false,
               })
             }
           });
@@ -239,7 +244,8 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
               klassExp.methods.push({
                 methodName,
                 params: (child as ts.MethodDeclaration).parameters.map(param => (param.name as ts.Identifier).escapedText),
-                isAsync: hasAsyncModifier(child as ts.MethodDeclaration)
+                isAsync: hasAsyncModifier(child as ts.MethodDeclaration),
+                isStatic: hasStaticModifier(child as ts.MethodDeclaration),
               })
             }
           });

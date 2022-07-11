@@ -4,7 +4,11 @@ import * as ts from 'typescript';
 import { parseSourceFile } from './parse-source-file';
 import { generateUnitTest } from './generate-unit-test';
 
-export function run(params: string[]) {
+type TRunOptions = {
+  returnOutput?: boolean
+}
+
+export function run(params: string[], opts?: TRunOptions) {
   if (!params.length) {
     // tslint:disable-next-line:no-console
     console.error('missing path argument');
@@ -29,5 +33,8 @@ export function run(params: string[]) {
   );
   const input = parseSourceFile(sourceFile);
   const output = generateUnitTest(inputPath, sourceCode, input);
-  writeFileSync(specFileName, output);
+  if(opts?.returnOutput){
+    return output;
+  }
+  return writeFileSync(specFileName, output);
 }

@@ -1,0 +1,548 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`integration component class based - default export should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import React from 'react';
+import MyTestComponent from './defaultClassComponent';
+
+const renderTree = tree => renderer.create(tree);
+describe('<MyTestComponent>', () => {
+  it('should render component', () => {
+    expect(renderTree(<MyTestComponent  
+      magicNumber={/*  PropTypes.number.isRequired */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<MyTestComponent  
+      magicNumber={/*  PropTypes.number.isRequired */}  
+      optional={/*  PropTypes.string */}  
+      style={/*  React.CSSProperties */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration component class based should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import React from 'react';
+import { connect } from 'react-redux';
+import { CallTimer } from './classComponent';
+
+jest.mock('react-redux');
+
+const renderTree = tree => renderer.create(tree);
+describe('<CallTimer>', () => {
+  it('should render component', () => {
+    expect(renderTree(<CallTimer  
+      magicNumber={/*  PropTypes.number.isRequired */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<CallTimer  
+      magicNumber={/*  PropTypes.number.isRequired */}  
+      optional={/*  PropTypes.string */}  
+      style={/*  React.CSSProperties */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration component functional - anonymous default export should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import React from 'react';
+import UnnamedDefaultComponent from './unnamedDefaultComponent';
+
+const renderTree = tree => renderer.create(tree);
+describe('<UnnamedDefaultComponent>', () => {
+  it('should render component', () => {
+    expect(renderTree(<UnnamedDefaultComponent 
+    />).toJSON()).toMatchSnapshot();
+  });
+  
+});"
+`;
+
+exports[`integration component functional - default export should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import React from 'react';
+import MyDefaultComponent from './functionalDefaultExportComponent';
+
+const renderTree = tree => renderer.create(tree);
+describe('<MyDefaultComponent>', () => {
+  it('should render component', () => {
+    expect(renderTree(<MyDefaultComponent 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<MyDefaultComponent  
+      message={/*  PropTypes.string */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration component functional - named export should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import React from 'react';
+import { MyFComponent } from './functionalNamedComponent';
+
+const renderTree = tree => renderer.create(tree);
+describe('<MyFComponent>', () => {
+  it('should render component', () => {
+    expect(renderTree(<MyFComponent 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<MyFComponent  
+      message={/*  PropTypes.string */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration components multiple - named export should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import React from 'react';
+import MyTestComponent, { SmallComponent } from './multipleComponent';
+
+const renderTree = tree => renderer.create(tree);
+describe('<SmallComponent>', () => {
+  it('should render component', () => {
+    expect(renderTree(<SmallComponent 
+    />).toJSON()).toMatchSnapshot();
+  });
+  
+});
+describe('<MyTestComponent>', () => {
+  it('should render component', () => {
+    expect(renderTree(<MyTestComponent  
+      magicNumber={/*  PropTypes.number.isRequired */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<MyTestComponent  
+      magicNumber={/*  PropTypes.number.isRequired */}  
+      optional={/*  PropTypes.string */}  
+      style={/*  React.CSSProperties */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration function default export assignement should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import defaultExportAssignement from './defaultExportAssignement';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('defaultExportAssignement', () => {
+  it('should expose a function', () => {
+		expect(defaultExportAssignement).toBeDefined();
+	});
+  
+  it('defaultExportAssignement should return expected output', () => {
+    // const retValue = defaultExportAssignement(myArgOne,myArgTwo);
+    expect(false).toBeTruthy();
+  });
+});"
+`;
+
+exports[`integration function default export identifier should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import helloDefFunc from './defaultExportIdentifier';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('helloDefFunc', () => {
+  it('should expose a function', () => {
+		expect(helloDefFunc).toBeDefined();
+	});
+  
+  it('helloDefFunc should return expected output', async () => {
+    // const retValue = await helloDefFunc();
+    expect(false).toBeTruthy();
+  });
+});"
+`;
+
+exports[`integration function named export definition should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import { helloNamedFunction } from './namedExportDefinition';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('helloNamedFunction', () => {
+  it('should expose a function', () => {
+		expect(helloNamedFunction).toBeDefined();
+	});
+  
+  it('helloNamedFunction should return expected output', () => {
+    // const retValue = helloNamedFunction(myArgOne,myArgTwo);
+    expect(false).toBeTruthy();
+  });
+});"
+`;
+
+exports[`integration function named export variable statement should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import { helloAssignedArrowFunction, myAsyncAssignedFunc } from './namedExportVariableStatement';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('helloAssignedArrowFunction', () => {
+  it('should expose a function', () => {
+		expect(helloAssignedArrowFunction).toBeDefined();
+	});
+  
+  it('helloAssignedArrowFunction should return expected output', () => {
+    // const retValue = helloAssignedArrowFunction(myArgOne,myArgTwo);
+    expect(false).toBeTruthy();
+  });
+});
+describe('myAsyncAssignedFunc', () => {
+  it('should expose a function', () => {
+		expect(myAsyncAssignedFunc).toBeDefined();
+	});
+  
+  it('myAsyncAssignedFunc should return expected output', async () => {
+    // const retValue = await myAsyncAssignedFunc(arg1);
+    expect(false).toBeTruthy();
+  });
+});"
+`;
+
+exports[`integration pojo default export identifier should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import myPojo from './defaultExportIdentifier';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('myPojo', () => {
+  
+  it('should expose a method methodOne()', () => {
+    //const retValue = myPojo.methodOne(param1);
+    expect(false).toBeTruthy();
+  });
+  
+  it('should expose a method methodTwo()', async () => {
+    //const retValue = await myPojo.methodTwo(a,b);
+    expect(false).toBeTruthy();
+  });
+  
+});"
+`;
+
+exports[`integration pojo named export assignement should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import { myPojo } from './namedExportAssignement';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('myPojo', () => {
+  
+  it('should expose a method methodOne()', () => {
+    //const retValue = myPojo.methodOne(param1);
+    expect(false).toBeTruthy();
+  });
+  
+  it('should expose a method methodTwo()', async () => {
+    //const retValue = await myPojo.methodTwo(a,b);
+    expect(false).toBeTruthy();
+  });
+  
+});"
+`;
+
+exports[`integration pojo named export identifier should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import { myPojo } from './namedExportIdentifier';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('myPojo', () => {
+  
+  it('should expose a method methodOne()', () => {
+    //const retValue = myPojo.methodOne(param1);
+    expect(false).toBeTruthy();
+  });
+  
+  it('should expose a method methodTwo()', async () => {
+    //const retValue = await myPojo.methodTwo(a,b);
+    expect(false).toBeTruthy();
+  });
+  
+});"
+`;
+
+exports[`integration single class default export by identifier should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import MyDemoClass from './defaultExportIdentifier';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('MyDemoClass', () => {
+  let instance;
+
+  beforeEach(() => {
+    instance = new MyDemoClass();
+  });
+
+  it('instance should be an instanceof MyDemoClass', () => {
+    expect(instance instanceof MyDemoClass).toBeTruthy();
+  });
+
+  it('should have a method hiThere()', () => {
+    // instance.hiThere();
+    expect(false).toBeTruthy();
+  });
+
+  it('should have a method myDemoMethod()', () => {
+    // instance.myDemoMethod();
+    expect(false).toBeTruthy();
+  });
+});"
+`;
+
+exports[`integration single class default export by identifier with static methods should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import DefaultExportStaticMethod from './defaultExportStaticMethod';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('DefaultExportStaticMethod', () => {
+  let instance;
+
+  beforeEach(() => {
+    instance = new DefaultExportStaticMethod();
+  });
+
+  it('instance should be an instanceof DefaultExportStaticMethod', () => {
+    expect(instance instanceof DefaultExportStaticMethod).toBeTruthy();
+  });
+
+  it('should have a static method makeInstance()', () => {
+    // DefaultExportStaticMethod.makeInstance(config);
+    expect(false).toBeTruthy();
+  });
+
+  it('should have a method myDemoMethod()', () => {
+    // instance.myDemoMethod();
+    expect(false).toBeTruthy();
+  });
+});"
+`;
+
+exports[`integration single class default export of assigned class should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import DefaultExportAssignment from './defaultExportAssignment';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('DefaultExportAssignment', () => {
+  let instance;
+
+  beforeEach(() => {
+    instance = new DefaultExportAssignment();
+  });
+
+  it('instance should be an instanceof DefaultExportAssignment', () => {
+    expect(instance instanceof DefaultExportAssignment).toBeTruthy();
+  });
+
+  it('should have a method hiThere()', () => {
+    // instance.hiThere();
+    expect(false).toBeTruthy();
+  });
+
+  it('should have a method myDemoMethod()', () => {
+    // instance.myDemoMethod();
+    expect(false).toBeTruthy();
+  });
+});"
+`;
+
+exports[`integration single class named export of assigned class definition should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import { MyDemoClass, myTestHelper } from './namedExportClassDefinition';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('MyDemoClass', () => {
+  let instance;
+
+  beforeEach(() => {
+    instance = new MyDemoClass();
+  });
+
+  it('instance should be an instanceof MyDemoClass', () => {
+    expect(instance instanceof MyDemoClass).toBeTruthy();
+  });
+
+  it('should have a method hiThere()', () => {
+    // instance.hiThere(name,surname);
+    expect(false).toBeTruthy();
+  });
+
+  it('should have a method myDemoMethodOne()', () => {
+    // instance.myDemoMethodOne(demoParam);
+    expect(false).toBeTruthy();
+  });
+
+  it('should have a method myDemoMethodTwo()', () => {
+    // instance.myDemoMethodTwo(demoParam);
+    expect(false).toBeTruthy();
+  });
+
+  it('should have a method myDemoMethodThree()', () => {
+    // instance.myDemoMethodThree(demoParam);
+    expect(false).toBeTruthy();
+  });
+});
+
+describe('myTestHelper', () => {
+  it('should expose a function', () => {
+		expect(myTestHelper).toBeDefined();
+	});
+  
+  it('myTestHelper should return expected output', () => {
+    // const retValue = myTestHelper(arg1,arg2);
+    expect(false).toBeTruthy();
+  });
+});"
+`;
+
+exports[`integration single class named export of class identifier should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import { MyDemoClass } from './namedExportIdentifier';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('MyDemoClass', () => {
+  let instance;
+
+  beforeEach(() => {
+    instance = new MyDemoClass();
+  });
+
+  it('instance should be an instanceof MyDemoClass', () => {
+    expect(instance instanceof MyDemoClass).toBeTruthy();
+  });
+
+  it('should have a method hiThere()', () => {
+    // instance.hiThere();
+    expect(false).toBeTruthy();
+  });
+
+  it('should have a method myDemoMethod()', () => {
+    // instance.myDemoMethod();
+    expect(false).toBeTruthy();
+  });
+});"
+`;
+
+exports[`integration single class named export of variable declaration with class assignement should match snapshot 1`] = `
+"import moduleOne from 'moduleOne';
+import moduleTwo from 'moduleTwo';
+import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
+import helpers from './local/helpers';
+import { MyVarClass } from './namedExportVariableDeclaration';
+
+jest.mock('moduleOne');
+jest.mock('moduleTwo');
+jest.mock('moduleThree/deep/file');
+jest.mock('./local/helpers');
+
+describe('MyVarClass', () => {
+  let instance;
+
+  beforeEach(() => {
+    instance = new MyVarClass();
+  });
+
+  it('instance should be an instanceof MyVarClass', () => {
+    expect(instance instanceof MyVarClass).toBeTruthy();
+  });
+
+  it('should have a method hiThere()', () => {
+    // instance.hiThere();
+    expect(false).toBeTruthy();
+  });
+
+  it('should have a method myDemoMethod()', () => {
+    // instance.myDemoMethod(myMethodArg1);
+    expect(false).toBeTruthy();
+  });
+});"
+`;
