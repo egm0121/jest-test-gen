@@ -100,9 +100,8 @@ describe('integration', () => {
 
 function createSnapshotTest(input: {
   file: string,
-  arguments?: string[]
 }) {
   it('should match snapshot', () => {
-    expect(run([...(input.arguments || []), input.file], { returnOutput: true })).toMatchSnapshot();
+    expect(run({ _: [input.file] }, { returnOutput: true })).toMatchSnapshot();
   });
 }

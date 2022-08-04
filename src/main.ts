@@ -3,25 +3,33 @@ import * as path from 'path';
 import * as ts from 'typescript';
 import { parseSourceFile } from './parse-source-file';
 import { generateUnitTest } from './generate-unit-test';
+import * as minimist from 'minimist';
 
 type TRunOptions = {
   returnOutput?: boolean
 }
 
-export function run(params: string[], opts?: TRunOptions) {
-  if (!params.length) {
+export function run(args: minimist.ParsedArgs, opts?: TRunOptions) {
+  if (!args._.length) {
     // tslint:disable-next-line:no-console
     console.error('missing path argument');
+    console.error('USAGE: jest-test-gen <path-to-file> --outputDir ./my/custom/output')
     process.exit(1);
   }
 
-  if (params.length > 1 && params[0].indexOf('--require') === 0) {
-    require(params[1]);
-    params = params.slice(2);
+  const inputPath = args._[0];
+  const inputFileExtension = path.extname(inputPath);
+  const inputFilenameNoExt = path.basename(inputPath, inputFileExtension);
+
+  let finalOutputDir = path.dirname(inputPath);
+  if (args.outputDir) {
+    if (path.isAbsolute(args.outputDir)){
+      finalOutputDir = args.outputDir;
+    } else {
+      finalOutputDir = path.join(process.cwd(), args.outputDir);
+    }
   }
-  const inputPath = params[0];
-  const inputFilenameNoExt = path.basename(inputPath, path.extname(inputPath));
-  const specFileName = path.join(path.dirname(inputPath),`${inputFilenameNoExt}.generated.test.js`);
+  const specFileName = path.join(finalOutputDir,`${inputFilenameNoExt}.generated.test${inputFileExtension}`);
 
   const sourceCode = readFileSync(inputPath).toString();
 
@@ -36,5 +44,6 @@ export function run(params: string[], opts?: TRunOptions) {
   if(opts?.returnOutput){
     return output;
   }
+  console.log('Writing generated test file: ', specFileName);
   return writeFileSync(specFileName, output);
 }

@@ -29,6 +29,7 @@
     "@types/debug": "^4.1.7",
     "@types/jest": "^28.1.4",
     "@types/lodash": "^4.14.141",
+    "@types/minimist": "^1.2.2",
     "@types/node": "^11.11.6",
     "jest": "^28.1.2",
     "ts-jest": "^28.0.5",
@@ -42,6 +43,7 @@
     "debug": "4.3.2",
     "latest-version": "^5.1.0",
     "lodash": "^4.1.*",
+    "minimist": "^1.2.6",
     "typescript": "^4.4.2"
   }
 }
