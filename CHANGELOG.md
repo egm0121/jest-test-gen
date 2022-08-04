@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.2.0
+- #2 support for ts and tsx components with prop types parsing
+- #5 add an option `--outputDir` to specify a custom output directory relative to the cwd() or absolute path
 ## v1.1.0
 
 - #3 Support for static methods in classes

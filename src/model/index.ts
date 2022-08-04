@@ -10,6 +10,7 @@ export interface ParsedReactComponent {
   isFunctional: boolean;
   props?: ParsedReactProp[];
   isDefaultExport: boolean;
+  tsPropTypeName?: ts.__String | string;
 }
 export interface ParsedClass {
   name: ts.__String | string;
@@ -57,6 +58,7 @@ export interface ParsedSourceFile {
   classes: ParsedClass[];
   functions: ParsedFunction[],
   pojos: ParsedPojo[],
+  typeDefinitions: ts.TypeAliasDeclaration[]
 }
 
 export interface ClassOptions {

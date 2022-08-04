@@ -3,7 +3,7 @@ const trimEnd = require('lodash/trimEnd');
 
 import { ParsedSourceFile, ParsedImport, ParsedSourceObject } from './model';
 import { MOCK_MODULES_BLACKLIST, IMPORT_MODULES_BLACKLIST } from './constants';
-import { basename } from 'path';
+import { basename, extname } from 'path';
 import { readFileSync } from 'fs';
 import debugFactory from 'debug';
 
@@ -19,7 +19,7 @@ export function generateUnitTest(path: string, _sourceCode: string, input: Parse
     instanceVariableName: 'instance',
   }
   const templateDir = `${__dirname}/../templates`;
-  const relativePath = './' + basename(path).replace('.ts', '');
+  const relativePath = './' + basename(path, extname(path));
   const quoteSymbol = determinateUsedQuote(input.imports);
 
   let namedExportsList = [

@@ -546,3 +546,138 @@ describe('MyVarClass', () => {
   });
 });"
 `;
+
+exports[`integration typescript support component class based - generic arg parsing should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import React from 'react';
+import { Card } from './tsFunctionalTyped';
+
+const renderTree = tree => renderer.create(tree);
+describe('<Card>', () => {
+  it('should render component', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* CardParagraph */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* CardParagraph */}  
+      myOptionalString={/* string */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration typescript support component functional - FunctionComponent<propType> - generic type arg parsing should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import React, { FunctionComponent } from 'react';
+import { Card } from './tsFunctionalGeneric';
+
+const renderTree = tree => renderer.create(tree);
+describe('<Card>', () => {
+  it('should render component', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* CardParagraph */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* CardParagraph */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration typescript support component functional - React.FC<propType> - generic type arg parsing should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import * as React from 'react';
+import { Card } from './tsFunctionalGeneric_React.FC';
+
+const renderTree = tree => renderer.create(tree);
+describe('<Card>', () => {
+  it('should render component', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* string */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* string */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration typescript support component functional - typed prop argument - array of type syntax should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import React from 'react';
+import { CardItems } from './tsFunctionalTypedArray';
+
+const renderTree = tree => renderer.create(tree);
+describe('<CardItems>', () => {
+  it('should render component', () => {
+    expect(renderTree(<CardItems  
+      title={/* string */}  
+      items={/* string[] */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<CardItems  
+      title={/* string */}  
+      items={/* string[] */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration typescript support component functional - typed prop argument - function declaration parsing should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import React from 'react';
+import { Card } from './tsFunctionalTypedDeclaration';
+
+const renderTree = tree => renderer.create(tree);
+describe('<Card>', () => {
+  it('should render component', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* CardParagraph */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* CardParagraph */}  
+      myOptionalString={/* string */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration typescript support component functional - typed prop argument should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import React from 'react';
+import { Card } from './tsFunctionalTyped';
+
+const renderTree = tree => renderer.create(tree);
+describe('<Card>', () => {
+  it('should render component', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* CardParagraph */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* CardParagraph */}  
+      myOptionalString={/* string */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;

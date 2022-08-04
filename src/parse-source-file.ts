@@ -9,6 +9,7 @@ const isNodeJSX = (node: ts.Node) => [
   ts.SyntaxKind.JsxExpression, 
   ts.SyntaxKind.JsxSelfClosingElement
 ].includes(node.kind);
+
 export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
   const result: ParsedSourceFile = {
     imports: [],
@@ -20,6 +21,7 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
     classes: [],
     functions: [],
     pojos: [],
+    typeDefinitions: [],
   };
   walker(file);
   return result;
@@ -54,6 +56,10 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
         debug('walker found expression statement');
         expressionStatementWalker(node as ts.ExpressionStatement);
         break;
+      case ts.SyntaxKind.TypeAliasDeclaration:
+        debug('walker found Type Alias Declaration statement');
+        typeDeclarationWalker(node as ts.TypeAliasDeclaration);
+        break;
       default:
         ts.forEachChild(node, walker);
     }
@@ -70,20 +76,20 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
   function hasDefaultModifier(node: ts.ClassDeclaration | ts.FunctionDeclaration | ts.FunctionExpression | ts.VariableStatement) {
     return node.modifiers ? node.modifiers.some(mode => mode.kind === ts.SyntaxKind.DefaultKeyword): false;
   }
-  function hasReactInheritance(node: ts.ClassDeclaration) {
+  function getReactInheritance(node: ts.ClassDeclaration) {
     let hasReactTypeExpression = (type: ts.ExpressionWithTypeArguments) => {
       const outerExpression = (type.expression as ts.PropertyAccessExpression)
-      const innerExpression = outerExpression.expression;
-      const expressionName = outerExpression.name.escapedText;
-      return (innerExpression as ts.Identifier).escapedText  === 'React' &&
-        ['PureComponent','Component'].includes(expressionName as string);
+      const outerExpressionText = outerExpression.getText();
+      return ['PureComponent','Component','React.PureComponent','React.Component'].includes(outerExpressionText);
     }
     if (!node.heritageClauses) {
-      return false;
+      return;
     }
-    return node.heritageClauses.some(clause => clause.types.some(hasReactTypeExpression));
+    return node.heritageClauses.find(clause => clause.types.some(hasReactTypeExpression));
   }
-  
+  function hasReactInheritance(node: ts.ClassDeclaration) {
+    return !!getReactInheritance(node);
+  }
   function hasJSXChildElement(node: ts.FunctionDeclaration | ts.FunctionExpression | ts.VariableStatement) {
     let hasJSX = false;
     ts.forEachChild(node, function visitor(child){
@@ -100,6 +106,37 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
     if(!name) return true;
     return !!name.match(/^[A-Z]{1}/);
   }
+  function parseArgumentTypeIntoComponentPropsMap(fnParamNode: ts.ParameterDeclaration) {
+    let compProps: ParsedReactProp[] = [];
+    if (fnParamNode) {
+      const firstArgType = fnParamNode.type as ts.TypeReferenceNode;
+      if (firstArgType) {
+        const tsPropTypeName = firstArgType.typeName.getText();
+        const maybeTypeDef = findMatchigTypeByName(tsPropTypeName as ts.__String);
+        if(maybeTypeDef){
+          compProps = parseReactPropsFromTypeDefinition(maybeTypeDef);
+        }
+      }
+    }
+    return compProps;
+  }
+  function parseVariableGenericTypeIntoComponentPropsMap(varChild: ts.VariableDeclaration) {
+    let compProps: ParsedReactProp[] = [];
+    if(varChild.type && varChild.type.kind == ts.SyntaxKind.TypeReference) {
+      const typeNode = (varChild.type as ts.TypeReferenceNode);
+      if(['FunctionComponent','React.FunctionComponent','FC','React.FC'].includes(typeNode.typeName.getText())) {
+        const tsPropType = typeNode.typeArguments?.[0] as ts.TypeReferenceNode
+        if(tsPropType){
+          const tsPropTypeName = tsPropType.typeName.getText();
+          const maybeMatchingTypeDef = findMatchigTypeByName(tsPropTypeName as ts.__String);
+          if(maybeMatchingTypeDef){
+            compProps = parseReactPropsFromTypeDefinition(maybeMatchingTypeDef);
+          }
+        }
+      }
+    }
+    return compProps;
+  }
   function classWalker(node: ts.ClassDeclaration) {
     const klass: ParsedClass = {
       name: node.name && node.name.escapedText as any,
@@ -112,6 +149,19 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
         isFunctional: false,
         isDefaultExport: hasDefaultModifier(node),
         props: [],
+      }
+      //parse type argument to the generic Component interface to extract propTypes
+      const inheritanceClause = getReactInheritance(node);
+      const inheritanceFirstType = inheritanceClause?.types[0];
+      if(inheritanceFirstType && inheritanceFirstType?.typeArguments?.length) {
+        const tsPropType = inheritanceFirstType.typeArguments?.[0] as ts.TypeReferenceNode
+        if(tsPropType){
+          currComp.tsPropTypeName = tsPropType.typeName.getText();
+          const maybeMatchingTypeDef = findMatchigTypeByName(currComp.tsPropTypeName as ts.__String);
+          if(maybeMatchingTypeDef){
+            currComp.props = parseReactPropsFromTypeDefinition(maybeMatchingTypeDef);
+          }
+        }
       }
       hasExportModifier(node) ? result.exportComponents.push(currComp): result.components.push(currComp);
       return;
@@ -168,6 +218,8 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
         props: [],
       }
       hasExportModifier(node) ? result.exportComponents.push(currComp): result.components.push(currComp);
+      const firstArg = node.parameters[0];
+      currComp.props = parseArgumentTypeIntoComponentPropsMap(firstArg);
       return;
     }
     if(hasExportModifier(node)){
@@ -190,12 +242,18 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
             isAsync: hasAsyncModifier(varChild.initializer as ts.FunctionExpression),
             isDefaultExport: hasDefaultModifier(varChild.initializer as ts.FunctionExpression),
           };
-          if(startsWithCapitalOrNoName(parsedFunction.name) && hasJSXChildElement(node)){
+          if(startsWithCapitalOrNoName(parsedFunction.name) && hasJSXChildElement(node)) {
             const currComp: ParsedReactComponent = {
               name: parsedFunction.name,
               isFunctional: true,
               isDefaultExport: parsedFunction.isDefaultExport,
               props: [],
+            }
+            const firstArg = (varChild.initializer as ts.FunctionExpression).parameters[0];
+            currComp.props = parseArgumentTypeIntoComponentPropsMap(firstArg);
+            // handle component propTypes definition using FunctionComponent generic type, parse it from first typeArgument
+            if(!currComp.props.length){
+              currComp.props = parseVariableGenericTypeIntoComponentPropsMap(varChild);
             }
             hasExportModifier(node) ? result.exportComponents.push(currComp): result.components.push(currComp);
             return;
@@ -327,6 +385,22 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
         }
       }
     }
+  }
+  function typeDeclarationWalker(node: ts.TypeAliasDeclaration) {
+    result.typeDefinitions.push(node);
+  }
+  function findMatchigTypeByName(tsTypeName: ts.__String) {
+    return result.typeDefinitions.find(node => node.name.escapedText === tsTypeName);
+  }
+  function parseReactPropsFromTypeDefinition(node: ts.TypeAliasDeclaration) {
+    return (node.type as ts.TypeLiteralNode).members.map(prop => {
+      const propDesc = prop as ts.PropertySignature;
+      return {
+        name: (propDesc.name as ts.Identifier).escapedText,
+        type: propDesc.type?.getFullText().trim() || '',
+        isOptional: !!propDesc.questionToken
+      }
+    })
   }
   function parseReactPropTypesFromLiteral(literalObj: ts.ObjectLiteralExpression) : ParsedReactProp[] {
     return (literalObj.properties as ts.NodeArray<ts.PropertyAssignment>).filter(prop => prop.name).map((prop: ts.PropertyAssignment) => {
