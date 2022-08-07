@@ -96,6 +96,38 @@ describe('integration', () => {
       file: 'spec/fixtures/components/multipleComponent.js',
     });
   });
+  describe(`typescript support`, () => {
+    describe('component class based - generic arg parsing', () => {
+      createSnapshotTest({
+        file: 'spec/fixtures/components/tsFunctionalTyped.tsx'
+      })
+    });
+    describe('component functional - typed prop argument', () => {
+      createSnapshotTest({
+        file: 'spec/fixtures/components/tsFunctionalTyped.tsx'
+      })
+    });
+    describe('component functional - typed prop argument - array of type syntax', () => {
+      createSnapshotTest({
+        file: 'spec/fixtures/components/tsFunctionalTypedArray.tsx'
+      })
+    });
+    describe('component functional - typed prop argument - function declaration parsing', () => {
+      createSnapshotTest({
+        file: 'spec/fixtures/components/tsFunctionalTypedDeclaration.tsx'
+      })
+    });
+    describe('component functional - FunctionComponent<propType> - generic type arg parsing', () => {
+      createSnapshotTest({
+        file: 'spec/fixtures/components/tsFunctionalGeneric.tsx'
+      })
+    });
+    describe('component functional - React.FC<propType> - generic type arg parsing', () => {
+      createSnapshotTest({
+        file: 'spec/fixtures/components/tsFunctionalGeneric_React.FC.tsx'
+      })
+    });
+  });
 });
 
 function createSnapshotTest(input: {

@@ -1,16 +1,19 @@
 {
   "name": "jest-test-gen",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Generator of jest unit test with all imports mocked and tests stub for every class and function exported",
   "keywords": [
     "jest",
     "unit test generator",
+    "test generator",
     "mocks",
     "testing",
     "jest generator",
     "es6 classes",
     "functions",
-    "export parsing"
+    "export parsing",
+    "typescript",
+    "tsx"
   ],
   "main": "lib/public-api.js",
   "scripts": {

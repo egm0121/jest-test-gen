@@ -3,8 +3,10 @@
 
 Automates creation of initial unit test files taking dependencies into account.
 
-Supported exports:
+Parsing and test generation is avaialable for the following exports:
 
+* Typescript typed React class components 🆕
+* Typescript typed Functional components 🆕
 * React Functional components 🆕
 * React Class based components 🆕
 * ES6 Classes default export or named exports
@@ -36,19 +38,14 @@ run `npm i -g jest-test-gen`
 
 run `jest-test-gen <path-to-file>`
 
-## TODO
-
-* Custom test output for React components
-* Enhance jest.mock support
-* TS unit test output for Typescript sources
 
 ## Development
 
 It's probably best to:
 
 * add an input file in `spec/fixtures` folder test.js
-* add expected output file, e.g. expected.test.js
-* link them in integration.spec.ts
+* add a snapshot test for the input spec in `integration.spec.ts`
+* verify that the snapshot is actually the wanted test output before commiting the updated snapshot.
 
 Alternavely, you can:
 

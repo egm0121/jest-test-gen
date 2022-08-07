@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 import * as path from 'path';
+import * as os from 'os';
 import * as ts from 'typescript';
 import { parseSourceFile } from './parse-source-file';
 import { generateUnitTest } from './generate-unit-test';
@@ -23,10 +24,12 @@ export function run(args: minimist.ParsedArgs, opts?: TRunOptions) {
 
   let finalOutputDir = path.dirname(inputPath);
   if (args.outputDir) {
-    if (path.isAbsolute(args.outputDir)){
-      finalOutputDir = args.outputDir;
+    const homeDir = os.homedir();
+    const resolvedConfigOutputDir = args.outputDir.replace(/^~(?=$|\/|\\)/, homeDir);
+    if (path.isAbsolute(resolvedConfigOutputDir)){
+      finalOutputDir = resolvedConfigOutputDir;
     } else {
-      finalOutputDir = path.join(process.cwd(), args.outputDir);
+      finalOutputDir = path.resolve(finalOutputDir, args.outputDir);
     }
   }
   const specFileName = path.join(finalOutputDir,`${inputFilenameNoExt}.generated.test${inputFileExtension}`);

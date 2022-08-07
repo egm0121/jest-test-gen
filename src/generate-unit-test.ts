@@ -20,7 +20,6 @@ export function generateUnitTest(path: string, _sourceCode: string, input: Parse
   }
   const templateDir = `${__dirname}/../templates`;
   const relativePath = './' + basename(path, extname(path));
-  console.log(relativePath);
   const quoteSymbol = determinateUsedQuote(input.imports);
 
   let namedExportsList = [
