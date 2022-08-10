@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import { ParsedSourceFile, ParsedClass, ParsedPojo, ParsedReactComponent, ParsedReactProp } from './model';
+import { ParsedSourceFile, ParsedClass, ParsedPojo, ParsedReactComponent, ParsedReactProp, ParsedPropTypePojo } from './model';
 import debugFactory from 'debug';
 
 const debug = debugFactory('jest-test-gen/parse-source-file');
@@ -22,6 +22,7 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
     functions: [],
     pojos: [],
     typeDefinitions: [],
+    propTypesPojo: [],
   };
   walker(file);
   return result;
@@ -271,7 +272,13 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
             isDefaultExport: hasDefaultModifier(varChild.initializer as ts.FunctionExpression),
             methods: [],
           };
-          (varChild.initializer as ts.ObjectLiteralExpression).properties.forEach((propNode: ts.Node) => {
+          const parsedPropTypePojo: ParsedPropTypePojo = {
+            name: parsedPojo.name,
+            props: []
+          };
+          let isPropTypePojo = false;
+          const currLiteralExp = (varChild.initializer as ts.ObjectLiteralExpression);
+          currLiteralExp.properties.forEach((propNode: ts.Node) => {
             if (propNode.kind === ts.SyntaxKind.MethodDeclaration){
               const methodNode = propNode as ts.MethodDeclaration;
               const methodName = methodNode.name ? (methodNode.name as ts.Identifier).escapedText : '';
@@ -282,7 +289,16 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
                 isStatic: false,
               })
             }
+            if (propNode.kind === ts.SyntaxKind.PropertyAssignment &&
+               (propNode as ts.PropertyAssignment).initializer.getText().trim().startsWith('PropTypes') ) {
+              isPropTypePojo = true;
+            }
           });
+          if(isPropTypePojo){
+            parsedPropTypePojo.props = parseReactPropTypesFromLiteral(currLiteralExp);
+            result.propTypesPojo.push(parsedPropTypePojo);
+            return;
+          }
           if(hasExportModifier(node)) {
             result.exportPojos.push(parsedPojo);
           } else {
@@ -315,8 +331,10 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
   }
 
   function exportDeclarationWalker(node: ts.ExportDeclaration){
+    debug('exportDeclarationWalker', node.exportClause?.getFullText());
     node.exportClause && (node.exportClause as ts.NamedExports).elements.forEach(identifier => {
       const idName = identifier.name.escapedText;
+      debug('exportDeclarationWalker', idName);
       const foundClassByIdentifier = result.classes.find(klass => klass.name === idName);
       if(foundClassByIdentifier) {
         result.exportClass = foundClassByIdentifier;
@@ -337,7 +355,14 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
   }
 
   function exportAssignementWalker(node: ts.ExportAssignment){
-    const idName = (node.expression as ts.Identifier).escapedText;
+    let idName : string | ts.__String = (node.expression as ts.Identifier).escapedText;
+    if( node.expression.kind === ts.SyntaxKind.CallExpression &&
+        node.expression.getFullText().trim().startsWith('React.memo') ) {
+      const callExpr = node.expression as ts.CallExpression;
+      if(callExpr.arguments.length && callExpr.arguments[0].kind === ts.SyntaxKind.Identifier){
+        idName = callExpr.arguments[0].getFullText(); 
+      }
+    }
     const foundClassByIdentifier = result.classes.find(klass => klass.name === idName);
     if(foundClassByIdentifier) {
       result.exportClass = {
@@ -393,18 +418,30 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
     return result.typeDefinitions.find(node => node.name.escapedText === tsTypeName);
   }
   function parseReactPropsFromTypeDefinition(node: ts.TypeAliasDeclaration) {
-    return (node.type as ts.TypeLiteralNode).members.map(prop => {
-      const propDesc = prop as ts.PropertySignature;
-      return {
-        name: (propDesc.name as ts.Identifier).escapedText,
-        type: propDesc.type?.getFullText().trim() || '',
-        isOptional: !!propDesc.questionToken
+    if (node.type.kind === ts.SyntaxKind.TypeLiteral){
+      return (node.type as ts.TypeLiteralNode).members.map(prop => {
+        const propDesc = prop as ts.PropertySignature;
+        return {
+          name: (propDesc.name as ts.Identifier).escapedText,
+          type: propDesc.type?.getFullText().trim() || '',
+          isOptional: !!propDesc.questionToken
+        }
+      })
+    }
+    if (node.type.kind === ts.SyntaxKind.TypeReference){
+      const refNode = node.type as ts.TypeReferenceNode;
+      if(refNode.typeName.getFullText().trim() === 'PropTypes.InferProps'){
+         const propTypePojoName = (refNode.typeArguments?.[0] as ts.TypeQueryNode).exprName.getText();
+         if (propTypePojoName) {
+          return result.propTypesPojo.find(pojo => pojo.name === propTypePojoName)?.props || [];
+         }
       }
-    })
+    }
+    return [];
   }
   function parseReactPropTypesFromLiteral(literalObj: ts.ObjectLiteralExpression) : ParsedReactProp[] {
     return (literalObj.properties as ts.NodeArray<ts.PropertyAssignment>).filter(prop => prop.name).map((prop: ts.PropertyAssignment) => {
-      const fullPropText = prop.initializer.getFullText().replace(/\n/ ,'');
+      const fullPropText = prop.initializer.getFullText().trim();
       return { 
         name: (prop.name as ts.Identifier)?.escapedText,
         type: fullPropText,
