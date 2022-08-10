@@ -127,6 +127,21 @@ describe('integration', () => {
         file: 'spec/fixtures/components/tsFunctionalGeneric_React.FC.tsx'
       })
     });
+    describe('component functional - React.FC<propType> - default React.memo export', () => {
+      createSnapshotTest({
+        file: 'spec/fixtures/components/tsFunctionalGeneric_React.memo.tsx'
+      })
+    });
+    describe('component functional - React.FC<propType> - PropTypes.inferProps', () => {
+      createSnapshotTest({
+        file: 'spec/fixtures/components/tsFunctionalComponenetInferFromPropTypes.tsx'
+      })
+    });
+    describe('component functional - React.FC<propType> - PropTypes.inferProps - interface', () => {
+      createSnapshotTest({
+        file: 'spec/fixtures/components/tsFunctionalGeneric_React.FC_interface.tsx'
+      })
+    });
   });
 });
 

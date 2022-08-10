@@ -9,14 +9,14 @@ const renderTree = tree => renderer.create(tree);
 describe('<MyTestComponent>', () => {
   it('should render component', () => {
     expect(renderTree(<MyTestComponent  
-      magicNumber={/*  PropTypes.number.isRequired */} 
+      magicNumber={/* PropTypes.number.isRequired */} 
     />).toJSON()).toMatchSnapshot();
   });
   it('should render component with props', () => {
     expect(renderTree(<MyTestComponent  
-      magicNumber={/*  PropTypes.number.isRequired */}  
-      optional={/*  PropTypes.string */}  
-      style={/*  React.CSSProperties */} 
+      magicNumber={/* PropTypes.number.isRequired */}  
+      optional={/* PropTypes.string */}  
+      style={/* React.CSSProperties */} 
     />).toJSON()).toMatchSnapshot();
   });
 });"
@@ -34,14 +34,14 @@ const renderTree = tree => renderer.create(tree);
 describe('<CallTimer>', () => {
   it('should render component', () => {
     expect(renderTree(<CallTimer  
-      magicNumber={/*  PropTypes.number.isRequired */} 
+      magicNumber={/* PropTypes.number.isRequired */} 
     />).toJSON()).toMatchSnapshot();
   });
   it('should render component with props', () => {
     expect(renderTree(<CallTimer  
-      magicNumber={/*  PropTypes.number.isRequired */}  
-      optional={/*  PropTypes.string */}  
-      style={/*  React.CSSProperties */} 
+      magicNumber={/* PropTypes.number.isRequired */}  
+      optional={/* PropTypes.string */}  
+      style={/* React.CSSProperties */} 
     />).toJSON()).toMatchSnapshot();
   });
 });"
@@ -75,7 +75,7 @@ describe('<MyDefaultComponent>', () => {
   });
   it('should render component with props', () => {
     expect(renderTree(<MyDefaultComponent  
-      message={/*  PropTypes.string */} 
+      message={/* PropTypes.string */} 
     />).toJSON()).toMatchSnapshot();
   });
 });"
@@ -94,7 +94,7 @@ describe('<MyFComponent>', () => {
   });
   it('should render component with props', () => {
     expect(renderTree(<MyFComponent  
-      message={/*  PropTypes.string */} 
+      message={/* PropTypes.string */} 
     />).toJSON()).toMatchSnapshot();
   });
 });"
@@ -116,14 +116,14 @@ describe('<SmallComponent>', () => {
 describe('<MyTestComponent>', () => {
   it('should render component', () => {
     expect(renderTree(<MyTestComponent  
-      magicNumber={/*  PropTypes.number.isRequired */} 
+      magicNumber={/* PropTypes.number.isRequired */} 
     />).toJSON()).toMatchSnapshot();
   });
   it('should render component with props', () => {
     expect(renderTree(<MyTestComponent  
-      magicNumber={/*  PropTypes.number.isRequired */}  
-      optional={/*  PropTypes.string */}  
-      style={/*  React.CSSProperties */} 
+      magicNumber={/* PropTypes.number.isRequired */}  
+      optional={/* PropTypes.string */}  
+      style={/* React.CSSProperties */} 
     />).toJSON()).toMatchSnapshot();
   });
 });"
@@ -587,6 +587,70 @@ describe('<Card>', () => {
     expect(renderTree(<Card  
       title={/* string */}  
       paragraph={/* CardParagraph */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration typescript support component functional - React.FC<propType> - PropTypes.inferProps - interface should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import * as React from 'react';
+import StartCollaborate from './tsFunctionalGeneric_React.FC_interface';
+
+const renderTree = tree => renderer.create(tree);
+describe('<StartCollaborate>', () => {
+  it('should render component', () => {
+    expect(renderTree(<StartCollaborate  
+      onAssignClick={/* () => void */}  
+      onCreateClick={/* () => void */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<StartCollaborate  
+      onAssignClick={/* () => void */}  
+      onCreateClick={/* () => void */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration typescript support component functional - React.FC<propType> - PropTypes.inferProps should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import * as React from 'react';
+import UserInfo from './tsFunctionalComponenetInferFromPropTypes';
+
+const renderTree = tree => renderer.create(tree);
+describe('<UserInfo>', () => {
+  it('should render component', () => {
+    expect(renderTree(<UserInfo 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<UserInfo  
+      contactId={/* PropTypes.string */}  
+      isOpen={/* PropTypes.bool */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+});"
+`;
+
+exports[`integration typescript support component functional - React.FC<propType> - default React.memo export should match snapshot 1`] = `
+"import renderer from 'react-test-renderer';
+import * as React from 'react';
+import Card from './tsFunctionalGeneric_React.memo';
+
+const renderTree = tree => renderer.create(tree);
+describe('<Card>', () => {
+  it('should render component', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* string */} 
+    />).toJSON()).toMatchSnapshot();
+  });
+  it('should render component with props', () => {
+    expect(renderTree(<Card  
+      title={/* string */}  
+      paragraph={/* string */} 
     />).toJSON()).toMatchSnapshot();
   });
 });"
