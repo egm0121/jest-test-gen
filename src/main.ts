@@ -48,5 +48,6 @@ export function run(args: minimist.ParsedArgs, opts?: TRunOptions) {
     return output;
   }
   console.log('Writing generated test file: ', specFileName);
-  return writeFileSync(specFileName, output);
+  writeFileSync(specFileName, output);
+  return specFileName;
 }

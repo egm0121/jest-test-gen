@@ -1,10 +1,14 @@
 # Changelog
 
-## v1.2.0
+## v1.3.1
+
+- return test output filename from `run()` function
+
+## v1.3.0
 - #2 support for ts and tsx components with prop types parsing
 - #5 add an option `--outputDir` to specify a custom output directory relative to the cwd() or absolute path
-## v1.1.0
 
+## v1.1.0
 - #3 Support for static methods in classes
 - #4 .toBeDefined instead of (or in addition to) .toBeTruthy 
 - #6 migrate tests from jasmine to Jest, makes a lot of sense for this project
