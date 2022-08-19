@@ -1,6 +1,14 @@
 # JestTestGen
 ![badgenpm](https://img.shields.io/npm/dm/jest-test-gen.svg) ![badgenpm](https://img.shields.io/npm/v/jest-test-gen.svg)
 
+## 🚀 Try jest-test-gen as a VS Code Extension
+
+**The VS Code extension is the fastest way to generate a unit test file from a source file directly from the IDE**
+
+[Install jest-test-gen Extension](https://marketplace.visualstudio.com/items?itemName=com-egm0121.vs-jest-test-gen)
+
+## About
+
 Automates creation of initial unit test files taking dependencies into account.
 
 Parsing and test generation is avaialable for the following exports:
