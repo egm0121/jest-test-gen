@@ -14,7 +14,7 @@ export function run(args: minimist.ParsedArgs, opts?: TRunOptions) {
   if (!args._.length) {
     // tslint:disable-next-line:no-console
     console.error('missing path argument');
-    console.error('USAGE: jest-test-gen <path-to-file> --outputDir ./my/custom/output')
+    console.error('USAGE: jest-test-gen <path-to-file> --outputDir ./my/custom/output --fileSuffix .generated.test')
     process.exit(1);
   }
 
@@ -32,7 +32,11 @@ export function run(args: minimist.ParsedArgs, opts?: TRunOptions) {
       finalOutputDir = path.resolve(finalOutputDir, args.outputDir);
     }
   }
-  const specFileName = path.join(finalOutputDir,`${inputFilenameNoExt}.generated.test${inputFileExtension}`);
+  let fileSuffix = '.generated.test';
+  if (args.fileSuffix) {
+    fileSuffix = args.fileSuffix;
+  }
+  const specFileName = path.join(finalOutputDir,`${inputFilenameNoExt}${fileSuffix}${inputFileExtension}`);
 
   const sourceCode = readFileSync(inputPath).toString();
 
