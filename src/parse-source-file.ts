@@ -240,7 +240,7 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
       node.declarationList.forEachChild((child) => {
         //handle arrow function declaration
         const varChild = child as ts.VariableDeclaration;
-        if(varChild.initializer && varChild.initializer.kind === ts.SyntaxKind.ArrowFunction){
+        if(varChild.initializer && (varChild.initializer.kind === ts.SyntaxKind.ArrowFunction || varChild.initializer.kind === ts.SyntaxKind.FunctionExpression)){
           const parsedFunction = {
             name: (varChild.name as ts.Identifier).escapedText,
             params: (varChild.initializer as ts.FunctionExpression).parameters.map(param => (param.name as ts.Identifier).escapedText),

@@ -206,7 +206,7 @@ exports[`integration function named export variable statement should match snaps
 import moduleTwo from 'moduleTwo';
 import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
 import helpers from './local/helpers';
-import { helloAssignedArrowFunction, myAsyncAssignedFunc } from './namedExportVariableStatement';
+import { helloAssignedArrowFunction, helloAssignedFunctionExpression, myAsyncAssignedFunc } from './namedExportVariableStatement';
 
 jest.mock('moduleOne');
 jest.mock('moduleTwo');
@@ -220,6 +220,16 @@ describe('helloAssignedArrowFunction', () => {
   
   it('helloAssignedArrowFunction should return expected output', () => {
     // const retValue = helloAssignedArrowFunction(myArgOne,myArgTwo);
+    expect(false).toBeTruthy();
+  });
+});
+describe('helloAssignedFunctionExpression', () => {
+  it('should expose a function', () => {
+		expect(helloAssignedFunctionExpression).toBeDefined();
+	});
+  
+  it('helloAssignedFunctionExpression should return expected output', () => {
+    // const retValue = helloAssignedFunctionExpression(myArgOne,myArgTwo);
     expect(false).toBeTruthy();
   });
 });

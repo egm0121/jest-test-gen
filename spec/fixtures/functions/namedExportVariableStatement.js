@@ -7,8 +7,12 @@ const helloAssignedArrowFunction = (myArgOne, myArgTwo) => {
 
 };
 
+const helloAssignedFunctionExpression = function (myArgOne, myArgTwo) {
+
+};
+
 const myAsyncAssignedFunc = async (arg1) => {
 
 }
 
-export { helloAssignedArrowFunction, myAsyncAssignedFunc};
+export { helloAssignedArrowFunction, helloAssignedFunctionExpression, myAsyncAssignedFunc };
