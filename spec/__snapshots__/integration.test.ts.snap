@@ -182,7 +182,7 @@ exports[`integration function named export definition should match snapshot 1`] 
 import moduleTwo from 'moduleTwo';
 import myDefaultExport, { myNamedExport } from 'moduleThree/deep/file';
 import helpers from './local/helpers';
-import { helloNamedFunction } from './namedExportDefinition';
+import { helloNamedFunction, helloAsFunction } from './namedExportDefinition';
 
 jest.mock('moduleOne');
 jest.mock('moduleTwo');
@@ -196,6 +196,16 @@ describe('helloNamedFunction', () => {
   
   it('helloNamedFunction should return expected output', () => {
     // const retValue = helloNamedFunction(myArgOne,myArgTwo);
+    expect(false).toBeTruthy();
+  });
+});
+describe('helloAsFunction', () => {
+  it('should expose a function', () => {
+		expect(helloAsFunction).toBeDefined();
+	});
+  
+  it('helloAsFunction should return expected output', () => {
+    // const retValue = helloAsFunction(myArgOne,myArgTwo);
     expect(false).toBeTruthy();
   });
 });"

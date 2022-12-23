@@ -8,4 +8,8 @@ function helloNamedFunction(myArgOne, myArgTwo) {
 
 };
 
-export { helloNamedFunction };
+function helloAsNamedFunction(myArgOne, myArgTwo) {
+
+};
+
+export { helloNamedFunction, helloAsNamedFunction as helloAsFunction };

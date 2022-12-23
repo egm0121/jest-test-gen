@@ -337,23 +337,24 @@ export function parseSourceFile(file: ts.SourceFile): ParsedSourceFile {
   function exportDeclarationWalker(node: ts.ExportDeclaration){
     debug('exportDeclarationWalker', node.exportClause?.getFullText());
     node.exportClause && (node.exportClause as ts.NamedExports).elements.forEach(identifier => {
-      const idName = identifier.name.escapedText;
+      const asName = identifier.name.escapedText;
+      const idName = identifier.propertyName?.escapedText || asName;
       debug('exportDeclarationWalker', idName);
       const foundClassByIdentifier = result.classes.find(klass => klass.name === idName);
       if(foundClassByIdentifier) {
-        result.exportClass = foundClassByIdentifier;
+        result.exportClass = { ...foundClassByIdentifier, name: asName };
       }
       const foundFunctionByIdentifier = result.functions.find(func => func.name === idName);
       if(foundFunctionByIdentifier){
-        result.exportFunctions.push(foundFunctionByIdentifier);
+        result.exportFunctions.push({ ...foundFunctionByIdentifier, name: asName });
       }
       const foundPojoByIdentifier = result.pojos.find(pojo => pojo.name === idName);
       if(foundPojoByIdentifier){
-        result.exportPojos.push(foundPojoByIdentifier);
+        result.exportPojos.push({ ...foundPojoByIdentifier, name: asName });
       }
       const foundComponentByIdentifier = result.components.find(component => component.name === idName);
       if(foundComponentByIdentifier){
-        result.exportComponents.push(foundComponentByIdentifier);
+        result.exportComponents.push({ ...foundComponentByIdentifier, name: asName });
       }
     });
   }
