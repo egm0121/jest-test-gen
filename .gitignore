@@ -3,3 +3,7 @@ lib/
 jasmine-unit-test-generator-*.tgz
 .npmrc
 .DS_Store
+.env
+.yarn
+**/yarn-error.log
+**/yarn.lock
