@@ -5,6 +5,7 @@ import * as ts from 'typescript';
 import { parseSourceFile } from './parse-source-file';
 import { generateUnitTest } from './generate-unit-test';
 import * as minimist from 'minimist';
+import { FILE_SUFFIX } from './constants';
 
 type TRunOptions = {
   returnOutput?: boolean
@@ -32,7 +33,7 @@ export function run(args: minimist.ParsedArgs, opts?: TRunOptions) {
       finalOutputDir = path.resolve(finalOutputDir, args.outputDir);
     }
   }
-  let fileSuffix = '.generated.test';
+  let fileSuffix = FILE_SUFFIX;
   if (args.fileSuffix) {
     fileSuffix = args.fileSuffix;
   }
